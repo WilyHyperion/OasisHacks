@@ -25,16 +25,16 @@ export default  function Home(props) {
     const handleBarCodeScanned = ({ type, data }) => {
         if(scanned) return;
         if(data == null) return;
+        let v = scanned
+        setScanned(true);
         props.navigation.navigate('Results', {
+            s: v,
             id: data
         })
-        setScanned(true);
       };
 
     const [permission, requestPermission] = Camera.useCameraPermissions();
     return (<>
-    <Text>Scanner</Text>
-
     {permission?.granted ? (<BarCodeScanner style = {styles.cam} onBarCodeScanned={ handleBarCodeScanned}></BarCodeScanner>) : <Text>Permission not granted</Text>}
     </>);
 }

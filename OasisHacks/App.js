@@ -26,10 +26,7 @@ const AppStack = () => {
           name="Results"
           component={Results}
         />
-        <Stack.Screen
-          name="Test"
-          component={Test}
-        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
