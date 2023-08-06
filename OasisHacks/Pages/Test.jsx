@@ -28,7 +28,7 @@ export default function Test(props) {
     <View>
       <Image
        source={require('../assets/Images/bar.png')} 
-        style={{ width: 350, height: 30,
+        style={{ width: 350, height: 20,
         position: 'absolute',
         left: 20,
         top: 51,
