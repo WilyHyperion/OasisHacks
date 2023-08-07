@@ -7,6 +7,11 @@ import Results from './Pages/Results';
 import Test from './Pages/Test';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
+import * as SplashScreen from "expo-splash-screen";
+import {useCallback} from "react";
+
+
+// SplashScreen.preventAutoHideAsync().then(r => console.log("Prevented splash screen from auto hiding"));
 
 
 const Stack = createNativeStackNavigator();
@@ -34,11 +39,9 @@ const AppStack = () => {
 
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    'Raleway': require('./assets/fonts/Raleway-Bold.ttf'),
-  });
+
   return (
-    <AppStack/>
+      <AppStack/>
   );
 }
 
