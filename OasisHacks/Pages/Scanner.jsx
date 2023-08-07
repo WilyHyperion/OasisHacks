@@ -1,7 +1,9 @@
-import * as React from 'react';
-import {Text, StyleSheet, Touchable, TouchableOpacity, View} from 'react-native';
+import  React , { useState, useEffect }from 'react';
+import { Text, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
+import { useIsFocused } from '@react-navigation/native';
 import {BarCodeScanner} from 'expo-barcode-scanner'
+
 
 const styles = StyleSheet.create({
     cam: {
@@ -27,25 +29,27 @@ function press(){
     console.log("pressed");
 }
 export default  function Home(props) {
-
-    const [scanned, setScanned]  = React.useState(false);
-    Camera.requestCameraPermissionsAsync();
-    Camera.requestPermission
-    const handleBarCodeScanned = ({ type, data }) => {
-        if(scanned) return;
-        if(data == null) return;
-        let v = scanned
-        setScanned(true);
-        props.navigation.navigate('Results', {
-            s: v,
-            id: data
-        })
-      };
-
+    useEffect(() => {
+        (async () => {
+          const { status } = await Camera.requestCameraPermissionsAsync();
+         })();
+      }, []);
+    const [type, setType] = useState(Camera.Constants.Type.back);
     const [permission, requestPermission] = Camera.useCameraPermissions();
+    const [usedYet, SetUsed] = useState(false);
+
     return (<>
-        {/*<View style={styles.container}>*/}
-    {permission?.granted ? (<BarCodeScanner style = {styles.cam} onBarCodeScanned={ handleBarCodeScanned}></BarCodeScanner>) : <Text>Permission not granted</Text>}
-        {/*</View>*/}
+    <Camera style = {styles.cam} type={type}
+        onBarCodeScanned= {(...args) => {
+        if(usedYet){
+                return;
+        }
+        SetUsed(true);
+          const data = args[0].data;
+          let result = JSON.stringify(data);
+          console.log(result)
+            props.navigation.navigate('Results', {result: result});
+          }}>
+             </Camera>
     </>);
 }
