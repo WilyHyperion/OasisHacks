@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Text, Image, Pressable,  View, FlatList } from 'react-native';
+import { Button, Text, Image, Pressable,  View, FlatList, ScrollView} from 'react-native';
 import { StyleSheet } from 'react-native';
 const data = require('../assets/data.json')
     const style = StyleSheet.create({
@@ -56,6 +56,24 @@ function removeBrackets(str) {
     }
     return arr.join('');
 }
+let good = [
+    'corn','salt','soybean','potatoes', 'enriched flour', 'whey', 'butter', 'malic acid', 'cheddar cheese','cheese', 'garlic powder', 'eggs', 'milk', 'disodium inosinate', 'disodium guanylate', 'natural flavors'
+    
+]
+let bad = [
+    'vegetable oil','chocolate chips', 'sugar', 'artificial flavors', 'palm oil', 'palm kernel oil', 'semi sweet chocolate chips', 'oil', 'sunfolower oil', 'canola oil', 'corn oil', 'artifical color'
+]
+function itemStyle(item) {
+    item = item.toLowerCase();
+    console.log(item);
+    if (good.includes(item)) {
+        return style.good;
+    }
+    if (bad.includes(item)) {
+        return style.bad;
+    }
+    return style.good;
+}
 function score(str) {
     for (let v of data) {
         if(v.FOODCOMMODITYITEM == undefined){
@@ -71,19 +89,18 @@ function score(str) {
     console.log("not found:" + str);
     return 0;
 }
-
+let ran = false;
 export default function Results(props) {
     let [img, setImg] = React.useState(null);
     let [ing, setIngredients] = React.useState([]);
-    if(props.route.params.s){
-        return(<></>);
-    }
-    let id = props.route.params.id;
+    let id = props.route.params.result;
     let v = `https://world.openfoodfacts.org/api/v0/product/${id}.json`
-    let fetched = false;
     fetch(v).then((res) => res.json()).then((res) => {
-        if(fetched) return;
-        fetched = true;
+        if(ran){
+            return;
+        }
+        ran = true;
+        console.log(ran);
         console.log(ingredients);
         if(res == undefined){
             return;
@@ -97,6 +114,7 @@ export default function Results(props) {
         ingredients = ingredients.replace('and 2% or less of the following:', '');
         ingredients = removeBrackets(ingredients);
         ingredients = ingredients.split(',')
+        setIngredients(ingredients);
         let total = 0;
         for (let v of ingredients) {
             v = v.trim();
@@ -106,13 +124,11 @@ export default function Results(props) {
             v = v.toLowerCase()
             total += score(v);
         }
-        setIngredients(ingredients);
         console.log(total);
 
 
     })
-
-    return (<> 
+    return (<>
         <Text style = {style.pagetitle}>Test</Text>
         <View style={{
           width: 720,
@@ -156,18 +172,22 @@ export default function Results(props) {
             }} 
             >
             </Image>
-            <FlatList
-        data = {ing}
-        renderItem = {({item}) => {
-            return (<Pressable style ={[style.good, {position: 'absolute', left: 140, top: 700, borderRadius:100,}]} >
-            <Text style = {{zIndex: 5, fontSize: 19, fontWeight: 'bold', color: 'white' }}> {item}
-            </Text>
-
-        </Pressable>
-            )
-        }}
-        />
-       
+            <ScrollView style = {{position: 'absolute',
+            left: 0,
+            width: '100%',
+            top: 600,
+            
+        }}scrollEnabled = {true}>
+        
+                {ing.map((item) => {
+                    return (
+                        <View style = {itemStyle(item)} key = {item}>
+                            <Text>{item}</Text>
+                        </View>
+                    )
+                }
+                )}
+            </ScrollView>
         </View>
-       </>);
+        </>)
 }
