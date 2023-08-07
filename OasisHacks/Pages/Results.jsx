@@ -145,7 +145,7 @@ export default function Results(props) {
         </View>
         <View>
           <Image
-           source={require('../assets/Images/bar.png')}
+           source={require('../assets/images/bar.png')}
             style={{ width: 350, height: 20,
             position: 'absolute',
             left: 20,

@@ -8,7 +8,14 @@ import {Button, Dimensions, Image, Pressable, SafeAreaView, StyleSheet, Text, Vi
 import Animated, {Extrapolate, interpolate, useAnimatedStyle} from "react-native-reanimated";
 import {BottomSheetBackdropProps} from "@gorhom/bottom-sheet";
 import {StatusBar} from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
 
+SplashScreen.preventAutoHideAsync().then( //wait 5s before hiding splash screen
+    () => {
+        setTimeout(() => {
+            SplashScreen.hideAsync().then(r => console.log("Splash screen hidden"));
+        }, 5000);
+    });
 
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
@@ -63,19 +70,13 @@ export default function Home(props) {
                 <StatusBar backgroundColor="aqua" barStyle={"light-content"}  />
                 <View style={styles.home}>
                     <Text style={styles.title}>Eco Label</Text>
-                    <Image source={require('../assets/temp.png')} style={
+                    <Image source={require('../assets/splash.png')} style={
                         {
-                            width: 500,
-                            height: 500,
-                            //rotate 90 degrees
-                            top: 30,
-                            transform: [{rotate: '-20deg'}],
-
-
-                            //center
+                            width: 400,
+                            height: 400,
+                            top: 120,
                             position: 'relative',
                             justifyContent: 'center',
-                            //drop shadow at bottom
                         }
 
                     }></Image>
@@ -92,7 +93,9 @@ export default function Home(props) {
                     >
                         {/*<View style={styles.swipeUp}>*/}
                         <Pressable style={styles.buttonContainer}
-                                   onPress={() => props.navigation.navigate('Scanner')}>
+                                   onPress={() => props.navigation.navigate('Scanner')}
+
+                        >
 
                             <Text style={styles.buttonText}>Scan Item</Text>
                         </Pressable>
@@ -131,6 +134,8 @@ const styles = StyleSheet.create({
         width: 100,
         alignItems: 'center',
         justifyContent: 'center',
+        //vertical center text
+        textAlignVertical: 'center',
 
 
         flex: 1,
@@ -156,8 +161,8 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             //at bottom
-            width: 0,
-            height: 12,
+            width: 100,
+            height: 10,
         },
         shadowRadius: 10.00,
         elevation: 24,
@@ -187,6 +192,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         textAlignVertical: 'center',
+        top: 30,
         flex: 1,
     }
 
