@@ -190,7 +190,8 @@ export default function Results(props) {
                 top: 600,
                 width: '100%',
                 flex: 1,
-                height: 1000,
+                height: 250,
+                overflow: 'scroll',
             }} scrollEnabled={true} >
 
                 {ing.map((item) => {
