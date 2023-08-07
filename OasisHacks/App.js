@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from './Pages/Home';
 import Scanner from './Pages/Scanner';
 import Results from './Pages/Results';
+import Test from './Pages/Test';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from "expo-splash-screen";
@@ -30,6 +31,7 @@ const AppStack = () => {
           name="Results"
           component={Results}
         />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
