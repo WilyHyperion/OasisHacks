@@ -57,7 +57,7 @@ function removeBrackets(str) {
     return arr.join('');
 }
 let good = [
-    'corn','salt','soybean','potatoes', 'enriched flour', 'whey', 'butter', 'malic acid', 'cheddar cheese','cheese', 'garlic powder', 'eggs', 'milk', 'disodium inosinate', 'disodium guanylate', 'natural flavors'
+    'cheddar cheese', 'corn','salt','soybean','potatoes', 'enriched flour', 'whey', 'butter', 'malic acid', 'cheddar cheese','cheese', 'garlic powder', 'eggs', 'milk', 'disodium inosinate', 'disodium guanylate', 'natural flavors'
     
 ]
 let bad = [
@@ -65,6 +65,10 @@ let bad = [
 ]
 function itemStyle(item) {
     item = item.toLowerCase();
+    item = item.trim();
+    if(item.includes('flavor') || item.includes('salt')){
+        return style.bad;
+    }
     console.log(item);
     if (good.includes(item)) {
         return style.good;
